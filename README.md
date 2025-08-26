@@ -31,6 +31,7 @@ Don't worry - your key stays in your browser's local storage. Nothing gets sent 
 
 - React + Vite
 - Tailwind CSS v4
+- REST API (OpenAI API)
 - pdfjs-dist for reading PDFs
 - jspdf + file-saver for exports
 - react-icons
