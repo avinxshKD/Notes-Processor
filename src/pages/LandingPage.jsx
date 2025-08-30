@@ -8,23 +8,23 @@ export default function LandingPage() {
   const features = [
     {
       icon: <FiCpu />,
-      title: 'Quick Summaries',
-      description: 'Turn long notes into bite-sized summaries you can actually remember'
+      title: 'Summaries',
+      description: 'Condenses your notes into short / medium / detailed breakdowns'
     },
     {
       icon: <FiBook />,
       title: 'Flashcards',
-      description: 'Auto-generate flashcards from your notes - no more manual typing'
+      description: 'Generates Q&A cards from your notes, exportable as CSV'
     },
     {
       icon: <FiZap />,
-      title: 'Practice Quizzes',
-      description: 'Test yourself with AI-generated questions before the real exam'
+      title: 'Quizzes',
+      description: 'MCQs pulled from your material with scoring and explanations'
     },
     {
       icon: <FiCheckCircle />,
-      title: 'Track What You Know',
-      description: 'Mark cards as learned and focus on the stuff you still need to review'
+      title: 'Progress Tracking',
+      description: 'Mark cards as known/unknown so you review what actually matters'
     }
   ];
 
@@ -39,13 +39,13 @@ export default function LandingPage() {
             </div>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4">
-            Study<span className="text-blue-600">AI</span>
+            Notes<span className="text-blue-600">Processor</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 max-w-2xl mx-auto">
-            Stop re-reading your notes. Start actually learning.
+            Upload notes, get summaries, flashcards, and quizzes.
           </p>
           <p className="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-xl mx-auto">
-            Upload your notes, let AI do the heavy lifting, and spend your time studying - not organizing.
+            PDF or plain text in, study material out. Runs on GPT-3.5, bring your own API key.
           </p>
           <Button
             size="lg"
@@ -82,9 +82,9 @@ export default function LandingPage() {
           </h2>
           <div className="space-y-6">
             {[
-              { step: 1, title: 'Drop in your notes', desc: 'Upload a PDF or just paste the text - whatever works' },
-              { step: 2, title: 'Pick what you need', desc: 'Summary? Flashcards? Quiz? Take your pick' },
-              { step: 3, title: 'Study smarter', desc: 'Review, practice, and export when you\'re ready' }
+              { step: 1, title: 'Upload', desc: 'Drop a PDF or paste your notes as plain text' },
+              { step: 2, title: 'Generate', desc: 'Pick summary, flashcards, or quiz and let it process the output' },
+              { step: 3, title: 'Export', desc: 'Download as PDF or CSV when you\'re done' }
             ].map((item) => (
               <div key={item.step} className="flex items-start gap-4">
                 <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">
@@ -103,7 +103,7 @@ export default function LandingPage() {
 
         {/* Footer */}
         <div className="text-center mt-16 text-gray-500 dark:text-gray-500 text-sm">
-          <p>Uses OpenAI's API • Everything stays in your browser</p>
+          <p>All data stays in localStorage — nothing sent anywhere except the API call</p>
         </div>
       </div>
     </div>
