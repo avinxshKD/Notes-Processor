@@ -11,14 +11,20 @@ export default function SettingsTab({ showToast }) {
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
+  const cleanApiKey = (value) => value.trim().replace(/^['"]|['"]$/g, '');
+
   const handleSave = () => {
-    setApiKey(tempApiKey);
+    const normalized = cleanApiKey(tempApiKey);
+    setApiKey(normalized);
+    setTempApiKey(normalized);
     setTestResult(null);
     showToast('API key saved successfully!', 'success');
   };
 
   const handleTest = async () => {
-    if (!tempApiKey) {
+    const normalized = cleanApiKey(tempApiKey);
+
+    if (!normalized) {
       showToast('Please enter an API key first', 'warning');
       return;
     }
@@ -27,15 +33,17 @@ export default function SettingsTab({ showToast }) {
     setTestResult(null);
 
     try {
-      const isValid = await testAPIKey(tempApiKey);
+      const isValid = await testAPIKey(normalized);
       setTestResult(isValid);
       
       if (isValid) {
+        setApiKey(normalized);
+        setTempApiKey(normalized);
         showToast('API key is valid!', 'success');
       } else {
         showToast('API key is invalid', 'error');
       }
-    } catch (error) {
+    } catch {
       setTestResult(false);
       showToast('Failed to test API key', 'error');
     } finally {
@@ -120,7 +128,7 @@ export default function SettingsTab({ showToast }) {
           {/* Warning */}
           <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <FiAlertCircle className="text-yellow-600 dark:text-yellow-400 text-xl flex-shrink-0 mt-0.5" />
+              <FiAlertCircle className="text-yellow-600 dark:text-yellow-400 text-xl shrink-0 mt-0.5" />
               <div className="text-sm text-yellow-800 dark:text-yellow-300">
                 <p className="font-medium mb-1">Heads up</p>
                 <p>
@@ -177,8 +185,8 @@ export default function SettingsTab({ showToast }) {
           What's This?
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-          StudyAI is basically your study buddy that never gets tired. 
-          Throw your notes at it and it'll spit out summaries, flashcards, and quizzes to help you actually remember stuff.
+          Notes Processor takes your study material and runs it through GPT-3.5 to generate 
+          summaries, flashcards, and quizzes. Upload a PDF or paste text — that's it.
         </p>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           v1.0.0 • Runs on OpenAI GPT-3.5

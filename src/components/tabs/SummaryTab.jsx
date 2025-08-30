@@ -48,7 +48,7 @@ export default function SummaryTab({ showToast }) {
     try {
       exportSummaryAsPDF(summary);
       showToast('Summary exported as PDF!', 'success');
-    } catch (error) {
+    } catch {
       showToast('Failed to export PDF', 'error');
     }
   };

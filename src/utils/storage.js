@@ -1,62 +1,24 @@
-/**
- * Save data to localStorage
- * @param {string} key - The key to store data under
- * @param {any} value - The value to store
- */
-export function saveToLocalStorage(key, value) {
+const PREFIX = 'notesproc_';
+
+export function load(key, fallback = null) {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error('Error saving to localStorage:', error);
+    const raw = localStorage.getItem(PREFIX + key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
   }
 }
 
-/**
- * Get data from localStorage
- * @param {string} key - The key to retrieve data from
- * @param {any} defaultValue - Default value if key doesn't exist
- * @returns {any} The stored value or default value
- */
-export function getFromLocalStorage(key, defaultValue = null) {
+export function save(key, value) {
   try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : defaultValue;
-  } catch (error) {
-    console.error('Error reading from localStorage:', error);
-    return defaultValue;
+    localStorage.setItem(PREFIX + key, JSON.stringify(value));
+  } catch (e) {
+    console.warn('localStorage write failed:', e);
   }
 }
 
-/**
- * Remove data from localStorage
- * @param {string} key - The key to remove
- */
-export function removeFromLocalStorage(key) {
-  try {
-    localStorage.removeItem(key);
-  } catch (error) {
-    console.error('Error removing from localStorage:', error);
-  }
+export function nuke() {
+  Object.keys(localStorage)
+    .filter(k => k.startsWith(PREFIX))
+    .forEach(k => localStorage.removeItem(k));
 }
-
-/**
- * Clear all data from localStorage
- */
-export function clearLocalStorage() {
-  try {
-    localStorage.clear();
-  } catch (error) {
-    console.error('Error clearing localStorage:', error);
-  }
-}
-
-// Storage keys
-export const STORAGE_KEYS = {
-  API_KEY: 'studyai_api_key',
-  THEME: 'studyai_theme',
-  NOTES_TEXT: 'studyai_notes_text',
-  FLASHCARDS: 'studyai_flashcards',
-  FLASHCARD_PROGRESS: 'studyai_flashcard_progress',
-  QUIZ_HISTORY: 'studyai_quiz_history',
-  SUMMARY: 'studyai_summary',
-};

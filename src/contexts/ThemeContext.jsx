@@ -1,18 +1,15 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { getFromLocalStorage, saveToLocalStorage, STORAGE_KEYS } from '../utils/storage';
+import { load, save } from '../utils/storage';
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
-    return getFromLocalStorage(STORAGE_KEYS.THEME, 'light');
-  });
+  const [theme, setTheme] = useState(() => load('theme', 'light'));
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(theme);
-    saveToLocalStorage(STORAGE_KEYS.THEME, theme);
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+    save('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

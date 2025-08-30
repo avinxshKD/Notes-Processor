@@ -61,7 +61,7 @@ export default function Dashboard() {
                 Back
               </Button>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Study<span className="text-blue-600">AI</span>
+                Notes<span className="text-blue-600">Processor</span>
               </h1>
             </div>
             

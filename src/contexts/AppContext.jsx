@@ -1,54 +1,34 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getFromLocalStorage, saveToLocalStorage, STORAGE_KEYS } from '../utils/storage';
+import { load, save } from '../utils/storage';
 
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  const [apiKey, setApiKey] = useState(() => getFromLocalStorage(STORAGE_KEYS.API_KEY, ''));
-  const [notesText, setNotesText] = useState(() => getFromLocalStorage(STORAGE_KEYS.NOTES_TEXT, ''));
-  const [summary, setSummary] = useState(() => getFromLocalStorage(STORAGE_KEYS.SUMMARY, ''));
-  const [flashcards, setFlashcards] = useState(() => getFromLocalStorage(STORAGE_KEYS.FLASHCARDS, []));
-  const [flashcardProgress, setFlashcardProgress] = useState(() => 
-    getFromLocalStorage(STORAGE_KEYS.FLASHCARD_PROGRESS, {})
-  );
-  const [quizHistory, setQuizHistory] = useState(() => getFromLocalStorage(STORAGE_KEYS.QUIZ_HISTORY, []));
+  const [apiKey, setApiKey] = useState(() => load('api_key', ''));
+  const [notesText, setNotesText] = useState(() => load('notes_text', ''));
+  const [summary, setSummary] = useState(() => load('summary', ''));
+  const [flashcards, setFlashcards] = useState(() => load('flashcards', []));
+  const [flashcardProgress, setFlashcardProgress] = useState(() => load('flashcard_progress', {}));
+  const [quizHistory, setQuizHistory] = useState(() => load('quiz_history', []));
   const [currentView, setCurrentView] = useState('landing');
   const [activeTab, setActiveTab] = useState('upload');
 
-  // Save to localStorage whenever state changes
+  // persist everything in one shot
   useEffect(() => {
-    saveToLocalStorage(STORAGE_KEYS.API_KEY, apiKey);
-  }, [apiKey]);
-
-  useEffect(() => {
-    saveToLocalStorage(STORAGE_KEYS.NOTES_TEXT, notesText);
-  }, [notesText]);
-
-  useEffect(() => {
-    saveToLocalStorage(STORAGE_KEYS.SUMMARY, summary);
-  }, [summary]);
-
-  useEffect(() => {
-    saveToLocalStorage(STORAGE_KEYS.FLASHCARDS, flashcards);
-  }, [flashcards]);
-
-  useEffect(() => {
-    saveToLocalStorage(STORAGE_KEYS.FLASHCARD_PROGRESS, flashcardProgress);
-  }, [flashcardProgress]);
-
-  useEffect(() => {
-    saveToLocalStorage(STORAGE_KEYS.QUIZ_HISTORY, quizHistory);
-  }, [quizHistory]);
+    save('api_key', apiKey);
+    save('notes_text', notesText);
+    save('summary', summary);
+    save('flashcards', flashcards);
+    save('flashcard_progress', flashcardProgress);
+    save('quiz_history', quizHistory);
+  }, [apiKey, notesText, summary, flashcards, flashcardProgress, quizHistory]);
 
   const updateFlashcardProgress = (cardIndex, status) => {
-    setFlashcardProgress(prev => ({
-      ...prev,
-      [cardIndex]: status
-    }));
+    setFlashcardProgress(prev => ({ ...prev, [cardIndex]: status }));
   };
 
   const addQuizResult = (result) => {
-    setQuizHistory(prev => [result, ...prev].slice(0, 10)); // Keep last 10 results
+    setQuizHistory(prev => [result, ...prev].slice(0, 10));
   };
 
   const clearAllData = () => {
